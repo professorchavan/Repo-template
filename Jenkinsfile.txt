@@ -11,7 +11,7 @@ pipeline {
         stage('Authenticate with Salesforce') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'salesforce-creds', passwordVariable: 'Pune@360', usernameVariable: 'employees@atman.in')]) {
+                    withCredentials([usernamePassword(credentialsId: 'Salesforce-Atman', passwordVariable: 'Pune@360', usernameVariable: 'employees@atman.in')]) {
                         sh '''
                         sf login --instanceurl https://login.salesforce.com --clientid 3MVG9VMBZCsTL9hngU02Je87E86TTpsr1ncQy_XfSNguHfQ.CEkb6AlT7XLrrCT.foaSds1lbgVBAPZyn7eAZ --clientsecret 6CBC69E7A7C6E8D34C5255F4B895EB27C1E6FF345FDF0974183F65840A6B403E --username employees@atman.in --password Pune@360
                         '''
