@@ -1,0 +1,42 @@
+pipeline {
+    agent any 
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Authenticate with Salesforce') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'salesforce-creds', passwordVariable: 'Pune@360', usernameVariable: 'employees@atman.in')]) {
+                        sh '''
+                        sf login --instanceurl https://login.salesforce.com --clientid 3MVG9VMBZCsTL9hngU02Je87E86TTpsr1ncQy_XfSNguHfQ.CEkb6AlT7XLrrCT.foaSds1lbgVBAPZyn7eAZ --clientsecret 6CBC69E7A7C6E8D34C5255F4B895EB27C1E6FF345FDF0974183F65840A6B403E --username employees@atman.in --password Pune@360
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Validate Deployment') {
+            steps {
+                sh 'sf deploy metadata preview -d path_to_your_metadata_folder'
+            }
+        }
+
+        stage('Manual Deployment') {
+            steps {
+                input(message: 'Approve deployment?', ok: 'Deploy')
+                sh 'sf deploy metadata -d path_to_your_metadata_folder'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline Execution Finished!'
+        }
+    }
+}
