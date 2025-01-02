@@ -22,14 +22,14 @@ pipeline {
 
         stage('Validate Deployment') {
             steps {
-                sh 'sf deploy metadata preview -d https://github.com/professorchavan/Repo-template/blob/main/package.json'
+                sh 'sf deploy metadata preview -d /package.json'
             }
         }
 
         stage('Manual Deployment') {
             steps {
                 input(message: 'Approve deployment?', ok: 'Deploy')
-                sh 'sf deploy metadata -d https://github.com/professorchavan/Repo-template/blob/main/package.json'
+                sh 'sf deploy metadata -d /package.json'
             }
         }
     }
